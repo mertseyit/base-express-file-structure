@@ -3,10 +3,13 @@ const app = express()
 const status = require('http-status')
 const cors = require('cors')
 const ErrorHandler = require('./middlewares/ErrorHandler')
+const sequelize = require('./configs/database')
+const { rootAPI } = require('./controllers/root/root.controller')
 
 //configurations
 require('dotenv').config()
 app.use(cors())
+
 
 // - routes -
 
@@ -27,13 +30,22 @@ app.use(ErrorHandler)
 
 //if request url doesn't exsist
 app.get('*',  (req,res) => {
+
+  //TODO(mert):here must be define error handler
   res.status(status.NOT_FOUND).json({
     message:status[status.NOT_FOUND],
     status:status.NOT_FOUND,
   })
 })
 
-//listen defined port
-app.listen(process.env.API_PORT, () => {
-  console.log(`Server listen on http://localhost:${process.env.API_PORT}/${process.env.API_VERSION_1}`);
-})
+//database connection
+sequelize.authenticate()
+  .then(() => console.log("Connecting..."))
+  .catch(error => console.error("Someting Went Wrong During Database Connection: ", error))
+  .finally(() => {
+    console.log('Done !')
+    //listen defined port
+    app.listen(process.env.API_PORT, rootAPI)
+  })
+
+
