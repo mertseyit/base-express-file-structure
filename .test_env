@@ -1,0 +1,13 @@
+#project mode
+NODE_ENV = development 
+
+#api values 
+API_PORT = 8080 # your port number
+API_VERSION_1 = api/v1 # your api version prefix
+
+#database values
+DATABASE_NAME = your_database_name
+DATABASE_USER_NAME = your_database_user_name
+DATABASE_USER_PASSWORD = your_database_password
+DATABASE_HOST = your_database_host
+
